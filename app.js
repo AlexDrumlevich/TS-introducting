@@ -20,8 +20,9 @@ function shiftCipher(str, shift = 1) {
     const range = maxCharCode - minCharCode + 1;
     return Array.from(str).map((element) => {
         const charCode = element.charCodeAt(0);
+        const correctShift = (charCode - minCharCode + shift) % range;
         if (charCode >= minCharCode && charCode <= maxCharCode) {
-            element = charCode + shift > maxCharCode ? String.fromCharCode(charCode + shift - range) : String.fromCharCode(charCode + shift);
+            element = String.fromCharCode(correctShift + minCharCode);
         }
         return element;
     }).join("");
@@ -46,12 +47,13 @@ function shiftDecipher(str, shift = 1) {
     const range = maxCharCode - minCharCode + 1;
     return Array.from(str).map((element) => {
         const charCode = element.charCodeAt(0);
+        const correctShift = (maxCharCode - charCode + shift) % range;
         if (charCode >= minCharCode && charCode <= maxCharCode) {
-            element = charCode - shift < minCharCode ? String.fromCharCode(charCode - shift + range) : String.fromCharCode(charCode - shift);
+            element = String.fromCharCode(maxCharCode - correctShift);
         }
         return element;
     }).join("");
 }
-console.log(shiftCipher("abz.", 3)); //"dec."
-console.log(shiftDecipher("dec.", 3)); //"abz."
+console.log(shiftCipher("abz.", 1000)); //"dec."
+console.log(shiftDecipher("mnl.", 1000)); //"abz."
 //# sourceMappingURL=app.js.map

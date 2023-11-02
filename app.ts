@@ -11,7 +11,7 @@ const b = 10;
 let c: string;
 c ="10"
 function getRandomNumber(min:number, max:number):number {
-return Math.floor(min + Math.random() * (max -min + 1));
+return Math.floor(min + Math.random() * (max - min + 1));
 }
 //HW #30
 function shiftCipher(str: string, shift: number = 1): string {
@@ -21,8 +21,9 @@ function shiftCipher(str: string, shift: number = 1): string {
 
    return Array.from(str).map((element) => {
       const charCode: number = element.charCodeAt(0)
+      const correctShift: number = (charCode - minCharCode + shift) % range
       if(charCode >= minCharCode && charCode <= maxCharCode) {
-         element = charCode + shift > maxCharCode ? String.fromCharCode(charCode + shift - range) : String.fromCharCode(charCode + shift)
+         element = String.fromCharCode(correctShift + minCharCode)
       }
       return element
    }).join("")
@@ -48,15 +49,18 @@ function shiftDecipher(str: string, shift: number = 1): string {
     const maxCharCode = "z".charCodeAt(0)
     const range: number = maxCharCode - minCharCode + 1
  
+   
+
     return Array.from(str).map((element) => {
-       const charCode: number = element.charCodeAt(0)
-       if(charCode >= minCharCode && charCode <= maxCharCode) {
-          element = charCode - shift < minCharCode ? String.fromCharCode(charCode - shift + range) : String.fromCharCode(charCode - shift)
-       }
-       return element
+      const charCode: number = element.charCodeAt(0)
+      const correctShift: number = (maxCharCode - charCode + shift) % range
+      if(charCode >= minCharCode && charCode <= maxCharCode) {
+        element = String.fromCharCode(maxCharCode - correctShift)
+      }
+      return element
     }).join("")
 }
 
-console.log(shiftCipher("abz.", 3))//"dec."
-console.log(shiftDecipher("dec.", 3))//"abz."
+console.log(shiftCipher("abz.", 1000))//"dec."
+console.log(shiftDecipher("mnl.", 1000))//"abz."
 
