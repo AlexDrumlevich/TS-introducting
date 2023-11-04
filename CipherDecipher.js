@@ -8,20 +8,34 @@ class CipherDecipher {
         this.shift = shift;
         this.amountSymbols = mostAsciiCode - leastAsciiCode + 1;
     }
+    cipher(input) {
+        return this.cipheringDeciphering(input, this.mapperCipher);
+    }
+    decipher(input) {
+        return this.cipheringDeciphering(input, this.mapperDecipher);
+    }
+    cipheringDeciphering(str, mapper) {
+        const arStr = Array.from(str);
+        const arRes = arStr.map(symb => {
+            let res = symb;
+            if (symb.charCodeAt(0) <= this.leastAsciiCode && symb.charCodeAt(0) >=
+                this.leastAsciiCode) {
+                res = mapper.call(this, symb);
+            }
+            return res;
+        });
+        return arRes.join('');
+    }
+    mapperCipher(symb) {
+        const actualShift = (symb.charCodeAt(0) - this.leastAsciiCode
+            + this.shift) % this.amountSymbols;
+        return String.fromCharCode(this.leastAsciiCode + actualShift);
+    }
+    mapperDecipher(symb) {
+        const actualShift = (this.mostAsciiCode - symb.charCodeAt(0) + this.shift)
+            % this.amountSymbols;
+        return String.fromCharCode(this.mostAsciiCode - actualShift);
+    }
 }
 exports.CipherDecipher = CipherDecipher;
-function cipher(input) {
-    return Array.from(input).map(char => {
-        const position = char.charCodeAt(0) - leastAsciiCode;
-        const actualShift = (position + shift) % amountSymbols;
-        return String.fromCharCode(leastAsciiCode + actualShift);
-    }).join("");
-}
-function decipher(input) {
-    return Array.from(input).map(char => {
-        const position = mostAsciiCode - char.charCodeAt(0);
-        const actualShift = (position + shift) % amountSymbols;
-        return String.fromCharCode(mostAsciiCode - actualShift);
-    }).join("");
-}
 //# sourceMappingURL=CipherDecipher.js.map
